@@ -53,7 +53,7 @@ game_frame_logic = function() {
 var player_fires = function() {
 	var player_pos = player.elem.position();
 	var bullet = {
-		elem: $("<div>",{"class": "player_bullet", style: "top:" + player_pos.top + "; left:" + player_pos.left}).text("•").appendTo("body"),
+		elem: $("<div>",{"class": "player_bullet", style: "top:" + player_pos.top + "; left:" + player_pos.left}).html("&#8226;").appendTo("body"),
 	};
 	player.bullets.push(bullet);
 };
