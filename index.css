@@ -1,0 +1,40 @@
+html, body {
+	background: #030010;
+	margin: 0;
+	padding: 0;
+	color: #eee;
+	font: sans-serif;
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+}
+
+#lenny {
+	font-size: 100px;
+}
+
+#player {
+	position: absolute;
+	top: 500px;
+	left: 250px;
+	font-size: 50px;
+	z-index: 100;
+}
+
+#deburg {
+	position: absolute;
+	bottom: 5px;
+}
+			
+.player_bullet {
+	color: red;
+	position: absolute;
+	font-size: 100px;
+	z-index: 0;
+}
+
+#game_info {
+	font-size: 32px;
+}
