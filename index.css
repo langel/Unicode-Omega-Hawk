@@ -1,5 +1,5 @@
 html, body {
-	background: #030010;
+	background: #111111;
 	margin: 0;
 	padding: 0;
 	color: #eee;
@@ -11,30 +11,45 @@ body {
 	min-height: 100%;
 }
 
+#gamefield {
+	position: relative;
+	height: 100%;
+	margin: 0 auto;
+	background: #030010;
+	overflow: hidden;
+}
+
 #lenny {
+	position: absolute;
 	font-size: 100px;
+	top: 0;
+	right: 0;
+	width: 100%;
 }
 
 #player {
 	position: absolute;
 	top: 500px;
 	left: 250px;
-	font-size: 50px;
+	font-size: 2em;
 	z-index: 100;
 }
 
 #deburg {
 	position: absolute;
 	bottom: 5px;
+	font-size: 12px;
+	font-family: sans-serif;
 }
 			
 .player_bullet {
 	color: red;
 	position: absolute;
-	font-size: 100px;
+	font-size: 2em;
 	z-index: 0;
 }
 
 #game_info {
-	font-size: 32px;
+	font-size: 2em;
+	font-family: serif;
 }
