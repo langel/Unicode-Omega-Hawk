@@ -36,7 +36,19 @@ var keyboard_table = {
 	upgrade: 76,
 };
 
-var gamepad_info = false;
+// default gamepad info
+var gamepad_info = {
+	axes: [0, 0],
+	buttons: [
+		{pressed: false},
+		{pressed: false},
+		{pressed: false},
+		{pressed: false},
+		{pressed: false},
+		{pressed: false},
+		{pressed: false},
+	],
+};
 
 var controls_init = function() {
 
@@ -65,11 +77,10 @@ controls_debug = function() {
 };
 
 var controls_read = function() {
-	var gamepad_info = false;
 	var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
 	for (var i = 0; i < gamepads.length; i++) {
 		var gp = gamepads[i];
-		if (gp) {
+		if (gp !== null && typeof gp === 'object') {
 			gamepad_info = gp;
 			var text = '';
 			for (var j=0; j < gp.axes.length; j++) {
@@ -79,10 +90,6 @@ var controls_read = function() {
 				text += "button" + j + ": " + gp.buttons[j].pressed + " ";
 			}
 			$("#controller_obj").text(text);
-/*
-			if (gp.axes[1] < 0) controls.up = 1;
-			if (gp.axes[1] > 0) controls.down = 1;
-			*/
 		}
 		if (!gamepad_info) gamepad_info = {};
 	}
