@@ -27,10 +27,7 @@ body {
 	width: 100%;
 }
 
-#player {
-	position: absolute;
-	top: 500px;
-	left: 250px;
+#player div {
 	font-size: 2em;
 	z-index: 100;
 }
@@ -42,11 +39,16 @@ body {
 	font-family: sans-serif;
 }
 			
-.player_bullet {
-	color: red;
-	position: absolute;
+.player_bullet div {
 	font-size: 2em;
-	z-index: 0;
+	color: red;
+	z-index: 500;
+}
+
+.ent {
+	position: absolute;
+	//background: rgba(128,128,128,0.5);
+	line-height: 80%;
 }
 
 #game_info {

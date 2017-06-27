@@ -3,15 +3,20 @@ $(function(){gamefield.init();});
 
 var gamefield = {
 	elem: null,
-	player_margin: 25,
+	oob: 10,
+	player_margin: 1,
 	unit_size: 0,
+	width: 24,
+	height: 32,
 
 	init: function() {
 		gamefield.elem = $("#gamefield");
-		gamefield.update_size();
 		$(window).resize(function() {
 			gamefield.update_size();
 		});
+		player.init();
+		gamefield.update_size();
+		player.reset_position();
 	},
 
 	frame: function() {
@@ -19,18 +24,15 @@ var gamefield = {
 		ents.frame();
 	},
 
-	px2em: function(px) {
-		return px / gamefield.unit_size / 2;
-	},
-
 	update_size: function() {
-		var body_height = $("body").height();
 		var body_width = $("body").width();
-		gamefield.elem.width(Math.floor(body_height * 0.25 * 3));
-		gamefield.height = gamefield.elem.height();
-		gamefield.width = gamefield.elem.width();
-		gamefield.unit_size = body_height / 32;
+		var body_height = $("body").height();
+		// set basic em unit
+		gamefield.unit_size = body_height / gamefield.height;
+	//	console.log(gamefield.unit_size);
 		$("body").css("font-size", gamefield.unit_size + 'px');
+		// set playfield to 4:3 ratio portrait mode
+		gamefield.elem.width(Math.floor(body_height * 0.25 * 3));
 
 		player.update_size();
 	},

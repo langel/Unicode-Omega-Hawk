@@ -104,4 +104,32 @@ var controls_read = function() {
 };
 
 
+var controls_direction = function() {
 
+	var dx = dy = deg = 0;
+
+	if (controls.left) dx = -1;
+	if (controls.right) dx = 1;
+	if (controls.left && controls.right) dx = 0;
+	if (controls.up) dy = -1;
+	if (controls.down) dy = 1;
+	if (controls.up && controls.down) dy = 0;
+
+	if (dx == 0 && dy == 0) return false;
+	
+	if (dx == 1) {
+		if (dy == -1) deg = 30;
+		else if (dy == 1) deg = 330;
+		else deg = 0;
+	}
+	else if (dx == -1) {
+		if (dy == 1) deg = 210;
+		else if (dy == -1) deg = 150;
+		else deg = 180;
+	}
+	else if (dy == -1) deg = 90;
+	else if (dy == 1) deg = 270;
+
+	return deg;
+
+};

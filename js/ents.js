@@ -1,17 +1,23 @@
 
 
 var ents = {
+
+	// player bullets
+	bullet: [],
+	// bad guys
 	enemy: [],
-	player_bullet: [],
+	// good guys
+	helper: [],
+	
 	types: [
 		'player_bullet',
 		'enemy',
 		'enemy_bullet',
 	],
 
-	spawn: function(type, enemy_object) {
-		enemy_object.elem.appendTo(gamefield.elem);	
-		ents[type].push(enemy_object);
+	spawn: function(type, object) {
+		object.elem.appendTo(gamefield.elem);	
+		ents[type].push(object);
 	},
 
 	despawn: function(type, index) {
@@ -21,18 +27,32 @@ var ents = {
 
 	frame: function() {
 		// PLAYER BULLETS
-		ents.player_bullet.forEach(function(bullet, index) {
-			bullet_pos = bullet.elem.position();
-			if (bullet_pos.top < -gamefield.player_margin) {
-				ents.despawn('player_bullet', index);
+		ents.bullet.forEach(function(bullet, index) {
+			if (ents.inside_gamefield(bullet)) {
+				bullet.x = bullet.x + bullet.dx;
+				bullet.y = bullet.y + bullet.dy;
+//				console.log(bullet.x + ' , ' + bullet.y);
+				bullet.elem.css({
+					left: bullet.x + 'em',
+					top: bullet.y + 'em',
+				});
 			}
-			else {
-				var distance = gamefield.px2em(bullet_pos.top) + bullet.speed_y;
-				bullet.elem.css({top: distance + 'em'});
+			else {	
+				ents.despawn('bullet', index);
 			}
 		});
 		// ENEMY MOVEMENT
 		// ENEMY BULLETS
+	},
+
+	inside_gamefield: function(ent) {
+	//console.log(ent);
+	//console.log(gamefield);
+		if (ent.x < -gamefield.oob) return false;
+		if (ent.x > gamefield.width + gamefield.oob) return false;
+		if (ent.y < -gamefield.oob) return false;
+		if (ent.y > gamefield.height + gamefield.oob) return false;
+		return true;
 	},
 
 };

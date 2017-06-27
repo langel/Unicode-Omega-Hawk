@@ -10,7 +10,7 @@ var engine = {
 
 
 game_init = function() {
-	player.elem = $("#player");
+	gamefield.init();
 	game_frame_logic();
 };
 

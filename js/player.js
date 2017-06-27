@@ -1,63 +1,54 @@
-$(function(){player.init();});
-
 
 var player = {
 	elem: null,
 	size: 2,
 	height: 0,
 	width: 0,
-	speed: 0.2,
-	bullet_speed_x: 0,
-	bullet_speed_y: -0.3,
-	bullet_throttle_count: 0,
-	bullet_throttle_rate: 4,
+	speed: 0.4,
+	x: 0,
+	y: 0,
+	dx: 0,
+	dy: 0,
 
 	init: function() {
-		player.update_size();
+	console.log("player init");
+		player.elem = $("#player");
 	},
 
 	frame: function() {
 		var player_pos = player.elem.position();
 		$("#play_pos").text(JSON.stringify(player_pos));
-		var em_left = gamefield.px2em(player_pos.left);
-		var em_top = gamefield.px2em(player_pos.top);
-		if (controls.left == 1 && player_pos.left > gamefield.player_margin) {
-			var distance = em_left - player.speed;
-			player.elem.css({left: distance + 'em'});
+
+		var direction = controls_direction();
+		if (direction !== false) {
+			var movement = u.trig_velocity(direction, player.speed);
+			player.x += movement.x;
+			player.x = Math.max(gamefield.player_margin, Math.min(player.x, gamefield.width - gamefield.player_margin - player.width));
+			player.y += movement.y;
+			player.y = Math.max(gamefield.player_margin, Math.min(player.y, gamefield.height - gamefield.player_margin - player.height));
+			player.elem.css({
+				left: player.x + 'em',
+				top: player.y + 'em',
+			});
 		}
-		if (controls.right == 1 && player_pos.left + player.width < gamefield.width - gamefield.player_margin) {
-			var distance = em_left + player.speed;
-			player.elem.css({left: distance + 'em'});
+		if (controls.fire == 1) {
+			gun.fire();	
 		}
-		if (controls.up == 1 && player_pos.top > gamefield.player_margin) {
-			var distance = em_top - player.speed;
-			player.elem.css({top: distance + 'em'});
-		}
-		if (controls.down == 1 && player_pos.top + player.height < gamefield.height - gamefield.player_margin) {
-			var distance = em_top + player.speed;
-			player.elem.css({top: distance + 'em'});
-		}
-		if (player.bullet_throttle_count == 0) {
-			if (controls.fire == 1) {
-				player.fire_bullet();	
-			}
-		}
-		else player.bullet_throttle_count--;
+		gun.frame();
 	},
 
-	fire_bullet: function() {
-		player.bullet_throttle_count = player.bullet_throttle_rate;
-		var player_pos = player.elem.position();
-		var bullet = {
-			speed_x: player.bullet_speed_x,
-			speed_y: player.bullet_speed_y,
-			elem: $("<div>",{"class": "player_bullet", style: "top:" + player_pos.top + "; left:" + player_pos.left}).html("&#8226;").appendTo(gamefield.elem),
-		};
-		ents.spawn('player_bullet', bullet);
+	reset_position: function() {
+		player.update_size();
+		player.x = gamefield.width * 0.5;
+		player.y = gamefield.height * 0.8;
+			player.elem.css({
+				left: player.x + 'em',
+				top: player.y + 'em',
+			});
 	},
 
 	update_size: function() {
-		player.height = player.elem.height();
-		player.width = player.elem.width();
+		player.height = u.px2em(player.elem.height());
+		player.width = u.px2em(player.elem.width());
 	},
 };
