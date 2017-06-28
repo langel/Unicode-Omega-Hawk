@@ -9,17 +9,17 @@ var gun = {
 	  [80, 100, 150, 30],
 	  [60, 90, 120, 160, 20],
 	],
-	speed: 1.2,
+	speed: 25,
 	str: "&#8226;",
 
 	throttle: {
 		count: 0,
-		rate: 4,
+		rate: 0.10,
 	},
 
 	fire: function() {
 		if (this.throttle.count) return;
-		this.throttle.count = this.throttle.rate;
+		this.throttle.count = Math.round(this.throttle.rate * engine.fps);
 		this.modes[this.mode].forEach(function(angle) {
 			gun.spawn_bullet(angle);
 		});
@@ -28,7 +28,7 @@ var gun = {
 	},
 
 	spawn_bullet: function(angle) {
-		var movement = u.trig_velocity(angle, this.speed);
+		var movement = u.trig_velocity(angle, this.speed / engine.fps);
 		var start_x = player.x + (player.width * 0.25);
 		var start_y = player.y + (player.height * 0.25);
 		var bullet = {

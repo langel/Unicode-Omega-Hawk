@@ -4,8 +4,8 @@ var player = {
 	size: 2,
 	height: 0,
 	width: 0,
-	speed: 0.4,
-	acceleration: 0.05,
+	speed: 10,
+	acceleration: 0.25,
 	x: 0,
 	y: 0,
 	dx: 0,
@@ -20,7 +20,7 @@ var player = {
 
 	frame: function() {
 		var player_pos = player.elem.position();
-		$("#play_pos").text(JSON.stringify(player_pos));
+		$("#play_pos").text(engine.fps + "fps " + JSON.stringify(player_pos));
 
 		var direction = controls_direction();
 		var movement;
@@ -28,23 +28,24 @@ var player = {
 			movement = u.trig_velocity(0, 0);
 		}
 		else {
-			movement = u.trig_velocity(direction, player.speed);
+			movement = u.trig_velocity(direction, player.speed / engine.fps);
 		}
 
+		var frame_acceleration = player.acceleration / engine.fps;
 		if (player.dx > movement.x) {
-			player.dx -= player.acceleration;
+			player.dx -= frame_acceleration;
 			if (player.dx <= movement.x) player.dx = movement.x;
 		}
 		else if (player.dx < movement.x) {
-			player.dx += player.acceleration;
+			player.dx += frame_acceleration;
 			if (player.dx >= movement.x) player.dx = movement.x;
 		}
 		if (player.dy > movement.y) {
-			player.dy -= player.acceleration;
+			player.dy -= frame_acceleration;
 			if (player.dy <= movement.y) player.dy = movement.y;
 		}
 		else if (player.dy < movement.y) {
-			player.dy += player.acceleration;
+			player.dy += frame_acceleration;
 			if (player.dy >= movement.y) player.dy = movement.y;
 		}
 

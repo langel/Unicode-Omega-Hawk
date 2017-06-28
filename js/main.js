@@ -4,7 +4,7 @@ $(function() {
 
 var engine = {
 	fps: 24,
-	fps_max: 300,
+	fps_max: 120,
 	frame_last_time: 0,
 	frame: {
 		d: null,
@@ -44,7 +44,7 @@ var engine = {
 		else engine.fps++;
 		engine.fps = Math.min(engine.fps, engine.fps_max);
 
-		console.log(engine.fps + ' ' + timeout);
+		// loop it, fool
 		setTimeout(engine.frame_handler, timeout);
 	},
 
