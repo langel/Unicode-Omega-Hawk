@@ -9,6 +9,8 @@ var gamefield = {
 	width: 24,
 	height: 32,
 
+	helper_count: 0,
+
 	init: function() {
 		gamefield.elem = $("#gamefield");
 		$(window).resize(function() {
@@ -22,6 +24,15 @@ var gamefield = {
 	frame: function() {
 		player.frame();
 		ents.frame();
+
+
+		if (this.helper_count == 0) {
+			this.helper_count = 100;
+			console.log('launch helper');
+			var helper = $.extend(true, {}, npe.helper);
+			ents.spawn('npe', helper.init());
+		}
+		this.helper_count--;
 	},
 
 	update_size: function() {

@@ -20,6 +20,7 @@ var engine = {
 		controls_init();
 		audio_init();
 		gamefield.init();
+		npe.helper.init();
 
 		engine.frame_handler();
 	},

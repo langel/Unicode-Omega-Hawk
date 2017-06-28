@@ -36,8 +36,10 @@ var gun = {
 			y: start_y,
 			dx: movement.x,
 			dy: movement.y,
-			elem: $("<div>",{"class": "player_bullet ent", style: "top:" + start_y + "; left:" + start_x}).html("<div>" + this.str + "</div>"),
+			elem: $("<div>",{"class": "player_bullet", style: "top:" + start_y + "; left:" + start_x}).html("<div>" + this.str + "</div>"),
 		};
+		bullet.width = u.px2em(bullet.elem.width());
+		bullet.height = u.px2em(bullet.elem.height());
 		ents.spawn('bullet', bullet);
 	},
 

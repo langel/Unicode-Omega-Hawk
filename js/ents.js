@@ -1,13 +1,12 @@
 
+// Entity Engine
 
 var ents = {
 
 	// player bullets
 	bullet: [],
-	// bad guys
-	enemy: [],
-	// good guys
-	helper: [],
+	// non-player entities
+	npe: [],
 	
 	types: [
 		'player_bullet',
@@ -16,7 +15,9 @@ var ents = {
 	],
 
 	spawn: function(type, object) {
-		object.elem.appendTo(gamefield.elem);	
+		object.elem.addClass('ent').appendTo(gamefield.elem);	
+		object.width = u.px2em(object.elem.width());
+		object.height = u.px2em(object.elem.height());
 		ents[type].push(object);
 	},
 
@@ -41,8 +42,14 @@ var ents = {
 				ents.despawn('bullet', index);
 			}
 		});
-		// ENEMY MOVEMENT
-		// ENEMY BULLETS
+		// UPDATE NPEs
+		ents.npe.forEach(function(npe, index) {
+			npe.frame(index);
+			npe.elem.css({
+				left: npe.x + 'em',
+				top: npe.y + 'em',
+			});
+		});
 	},
 
 	inside_gamefield: function(ent) {
@@ -53,6 +60,23 @@ var ents = {
 		if (ent.y < -gamefield.oob) return false;
 		if (ent.y > gamefield.height + gamefield.oob) return false;
 		return true;
+	},
+
+	check_for_hit: function(ent) {
+		var hit = false;
+		ents.bullet.forEach(function(bullet, index) {
+			if (bullet.x + bullet.width > ent.x &&
+				bullet.x < ent.x + ent.width &&
+				bullet.y + bullet.height > ent.y &&
+				bullet.y < ent.y + ent.width
+			) {
+				console.log('hit!');
+				ents.despawn('bullet', index);
+				hit = true;
+				return;
+			}
+		});
+		return hit;
 	},
 
 };
