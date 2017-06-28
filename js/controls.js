@@ -118,13 +118,13 @@ var controls_direction = function() {
 	if (dx == 0 && dy == 0) return false;
 	
 	if (dx == 1) {
-		if (dy == -1) deg = 30;
-		else if (dy == 1) deg = 330;
+		if (dy == -1) deg = 45;
+		else if (dy == 1) deg = 315;
 		else deg = 0;
 	}
 	else if (dx == -1) {
-		if (dy == 1) deg = 210;
-		else if (dy == -1) deg = 150;
+		if (dy == 1) deg = 225;
+		else if (dy == -1) deg = 135;
 		else deg = 180;
 	}
 	else if (dy == -1) deg = 90;
