@@ -31,15 +31,24 @@ var gun = {
 		var movement = u.trig_velocity(angle, this.speed / engine.fps);
 		var start_x = player.x + (player.width * 0.25);
 		var start_y = player.y + (player.height * 0.25);
+		var innards = '<div class="player_bullet"><div class="sprite">' + this.str + '</div><div class="hitbox"></div></div>';
 		var bullet = {
 			x: start_x,
 			y: start_y,
 			dx: movement.x,
 			dy: movement.y,
-			elem: $("<div>",{"class": "player_bullet", style: "top:" + start_y + "; left:" + start_x}).html("<div>" + this.str + "</div>"),
+			hitbox: {
+				w: 0.5,
+				h: 0.2,
+				x: 0,
+				y: 0.6,
+			},
+			elem: $(innards),
 		};
-		bullet.width = u.px2em(bullet.elem.width());
-		bullet.height = u.px2em(bullet.elem.height());
+		bullet.elem.css({
+			top: start_x + 'em',
+			left: start_y + 'em'
+		});
 		ents.spawn('bullet', bullet);
 	},
 

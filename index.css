@@ -39,7 +39,7 @@ body {
 	font-family: sans-serif;
 }
 			
-.player_bullet div {
+.player_bullet .sprite {
 	font-size: 2em;
 	color: red;
 	z-index: 500;
@@ -48,7 +48,12 @@ body {
 .ent {
 	position: absolute;
 	//background: rgba(128,128,128,0.5);
-	line-height: 80%;
+	//line-height: 80%;
+}
+
+.hitbox {
+	position: absolute;
+	background: rgba(50,250,50,0.9);
 }
 
 #game_info {

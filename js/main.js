@@ -10,6 +10,7 @@ var engine = {
 		d: null,
 		last: 0,
 		next: 0,
+		processing: false,
 	},
 
 	init: function() {
@@ -33,11 +34,11 @@ var engine = {
 		engine.frame.last = engine.frame.d.getTime();
 
 		// handle all frame logic
-		controls_read();
-
-		gamefield.frame();
+		engine.frame.processing = true;
+		engine.frame.processing = gamefield.frame();
 
 		// decide how long to wait for next frame
+		while (engine.frame.processing === true) {};
 		var timeout = engine.frame.next - engine.frame.d.getTime();
 
 		// optimize frame rate

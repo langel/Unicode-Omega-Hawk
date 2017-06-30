@@ -22,9 +22,9 @@ var gamefield = {
 	},
 
 	frame: function() {
+		controls_read();
 		player.frame();
 		ents.frame();
-
 
 		if (this.helper_count == 0) {
 			this.helper_count = 100;
@@ -33,6 +33,7 @@ var gamefield = {
 			ents.spawn('npe', helper.init());
 		}
 		this.helper_count--;
+		return false;
 	},
 
 	update_size: function() {
