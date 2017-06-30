@@ -3,7 +3,7 @@ $(function() {
 });
 
 var engine = {
-	fps: 24,
+	fps: 30,
 	fps_max: 120,
 	frame_last_time: 0,
 	frame: {
@@ -11,6 +11,9 @@ var engine = {
 		last: 0,
 		next: 0,
 		processing: false,
+    then: null,
+    now: null,
+    interval: null,
 	},
 
 	init: function() {
@@ -21,33 +24,23 @@ var engine = {
 		controls_init();
 		audio_init();
 		gamefield.init();
-		npe.helper.init();
 
-		engine.frame_handler();
+		//engine.frame_handler();
+    engine.then = performance.now();
+    engine.frame.interval = 1000 / engine.fps;
+    engine.frame();
 	},
 
 
-	frame_handler: function() {
+  frame: function() {
+    engine.now = performance.now();
+    var elapsed = engine.now - engine.then;
+    engine.fps = Math.round(1000 / elapsed);
 
-		// decide when is the next frame
-		engine.frame.next = engine.frame.last + Math.round((1 / engine.fps) * 1000);
-		engine.frame.last = engine.frame.d.getTime();
+    gamefield.frame();
 
-		// handle all frame logic
-		engine.frame.processing = true;
-		engine.frame.processing = gamefield.frame();
-
-		// decide how long to wait for next frame
-		while (engine.frame.processing === true) {};
-		var timeout = engine.frame.next - engine.frame.d.getTime();
-
-		// optimize frame rate
-		if (timeout * engine.fps < 333) engine.fps--
-		else engine.fps++;
-		engine.fps = Math.min(engine.fps, engine.fps_max);
-
-		// loop it, fool
-		setTimeout(engine.frame_handler, timeout);
-	},
+    engine.then = engine.now;
+    requestAnimationFrame(engine.frame);
+  },
 
 };
