@@ -72,6 +72,9 @@ body {
 	right: 3em;
 }
 
+.star {
+	position: absolute;
+}
 .helper {
 	font-size: 2em;
 }

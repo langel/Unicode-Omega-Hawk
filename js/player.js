@@ -90,7 +90,6 @@ var player = {
 	},
 
 	points_add: function(amount) {
-		console.log(amount);
 		this.points += amount;
 		$('#points').text(this.points);
 	},

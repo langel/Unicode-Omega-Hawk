@@ -21,12 +21,14 @@ var gamefield = {
 		});
 		player.init();
 		gamefield.update_size();
+		starfield.init();
 		player.reset_position();
 		var knight = $.extend(true, {}, npe.chess_knight);
 		ents.spawn('npe', knight.init());
 	},
 
 	frame: function() {
+		starfield.frame();
 		if (this.helper_count <= 0) {
 			this.helper_count = 180;
 		//	console.log('launch helper');

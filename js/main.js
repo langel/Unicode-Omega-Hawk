@@ -4,17 +4,17 @@ $(function() {
 
 var engine = {
 	fps: 30,
-		fps_max: 120,
-		frame_last_time: 0,
-		frame: {
-			d: null,
-			last: 0,
-			next: 0,
-			processing: false,
-			then: null,
-			now: null,
-			interval: null,
-	  	},
+	fps_max: 120,
+	frame_last_time: 0,
+	frame: {
+		d: null,
+		last: 0,
+		next: 0,
+		processing: false,
+		then: null,
+		now: null,
+		interval: null,
+	},
 
 	init: function() {
 
