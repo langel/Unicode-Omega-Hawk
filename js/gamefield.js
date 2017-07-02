@@ -1,15 +1,18 @@
-$(function(){gamefield.init();});
-
 
 var gamefield = {
 	elem: null,
-	oob: 10,
+	oob: 2,
 	player_margin: 1,
 	unit_size: 0,
 	width: 24,
 	height: 32,
 
 	helper_count: 0,
+	helper_rate: 180,
+	ass_count: 300,
+	ass_rate: 3000,
+	knight_count: 50,
+	knight_rate: 750,
 
 	init: function() {
 		gamefield.elem = $("#gamefield");
@@ -19,20 +22,36 @@ var gamefield = {
 		player.init();
 		gamefield.update_size();
 		player.reset_position();
+		var knight = $.extend(true, {}, npe.chess_knight);
+		ents.spawn('npe', knight.init());
 	},
 
 	frame: function() {
+		if (this.helper_count <= 0) {
+			this.helper_count = 180;
+		//	console.log('launch helper');
+			var helper = $.extend(true, {}, npe.helper);
+		//	console.log(helper);
+			ents.spawn('npe', helper.init());
+		}
+		this.helper_count--;
+		if (this.ass_count <= 0) {
+			this.ass_count = 120;
+			var helper = $.extend(true, {}, npe.ghost_ass);
+			ents.spawn('npe', helper.init());
+		}
+		this.ass_count--;
+		if (this.knight_count <= 0) {
+			this.knight_count = this.knight_rate;
+			var helper = $.extend(true, {}, npe.chess_knight);
+			ents.spawn('npe', helper.init());
+		}
+		this.knight_count--;
+
 		controls_read();
 		player.frame();
 		ents.frame();
 
-		if (this.helper_count == 0) {
-			this.helper_count = 100;
-			console.log('launch helper');
-			var helper = $.extend(true, {}, npe.helper);
-			ents.spawn('npe', helper.init());
-		}
-		this.helper_count--;
 		return false;
 	},
 

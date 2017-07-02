@@ -10,15 +10,41 @@ var player = {
 	y: 0,
 	dx: 0,
 	dy: 0,
+	points: 0,
+	life: 10,
+	life_start: 10,
 
 
 	init: function() {
 		console.log("player init");
+		console.trace();
 		player.elem = $("#player");
+		player.reset_position();
+		player.points_add(0);
+		player.lifebar_reset();
 	},
 
 
 	frame: function() {
+
+		player.hitbox = {
+			x: player.x + player.width * 0.1,
+			y: player.y + player.height * 0.3,
+			w: player.width * 0.8,
+			h: player.height * 0.4,
+		};
+		ents['npe'].forEach(function(ent, index) {
+		//console.log(player);
+			if (player.hitbox.x + player.hitbox.w > ent.hitbox.x &&
+				player.hitbox.x < ent.hitbox.x + ent.hitbox.w &&
+				player.hitbox.y + player.hitbox.h > ent.hitbox.y &&
+				player.hitbox.y < ent.hitbox.y + ent.hitbox.w
+			) {
+				player.hit(ent);
+				ents.despawn('npe', index);
+			}
+
+		});
 		var player_pos = player.elem.position();
 		$("#play_pos").text(engine.fps + "fps " + JSON.stringify(player_pos));
 
@@ -63,15 +89,49 @@ var player = {
 		gun.frame();
 	},
 
+	points_add: function(amount) {
+		console.log(amount);
+		this.points += amount;
+		$('#points').text(this.points);
+	},
+
+	hit: function(ent) {
+		if (typeof ent.damage == 'undefined') {
+			ent.damage = 1;
+		}
+		player.life -= ent.damage;
+		player.lifebar_update();
+	},
+
+	lifebar_reset: function() {
+		player.life = player.life_start;
+
+		$('#life #bar').html('&#x2593;');
+		player.lifebar_update();
+	},
+
+	lifebar_update: function() {
+		var life_not = player.life_start - player.life;
+		var text = '';
+		for (var i = 0; i < player.life; i++) {
+			text += '&#x2593;';
+		}
+		for (var i = 0; i < life_not; i++) {
+			text += '&#x2591;';
+		}
+		$('#life #bar').html(text);
+//		console.log(life_not + ' ' + player.life + ' ' + text);
+	},
+
 
 	reset_position: function() {
 		player.update_size();
 		player.x = gamefield.width * 0.5;
 		player.y = gamefield.height * 0.8;
-			player.elem.css({
-				left: player.x + 'em',
-				top: player.y + 'em',
-			});
+		player.elem.css({
+			left: player.x + 'em',
+			top: player.y + 'em',
+		});
 	},
 
 

@@ -3,7 +3,6 @@ html, body {
 	margin: 0;
 	padding: 0;
 	color: #eee;
-	font: sans-serif;
 	height: 100%;
 }
 
@@ -59,6 +58,18 @@ body {
 #game_info {
 	font-size: 2em;
 	font-family: serif;
+}
+
+#top_stats {
+	position:absolute;
+	width: 100%;
+	font-family: verdana, sans-serif;
+	padding: 1em;
+}
+
+#life {
+	position: absolute;
+	right: 3em;
 }
 
 .helper {

@@ -19,20 +19,23 @@ var ents = {
 		object.width = u.px2em(object.elem.width());
 		object.height = u.px2em(object.elem.height());
 		// setup npe's hitbox
-		var hitbox = $('.hitbox', object.elem);
-		hitbox.width(object.width * object.hitbox.w + 'em');
-		hitbox.height(object.height * object.hitbox.h + 'em');
-		hitbox.css('left', ((object.width - (1 - object.hitbox.w) * object.width) / 2 + object.hitbox.x) + 'em');
-		hitbox.css('top', ((object.height - (1 - object.hitbox.h) * object.height) / 2 + object.hitbox.y) + 'em');
-		object.hitbox.w = u.px2em(hitbox.width());
-		object.hitbox.h = u.px2em(hitbox.height());
-		var pos = hitbox.position();
+		object.hitbox.elem = $('.hitbox', object.elem);
+		object.hitbox.elem.width(object.width * object.hitbox.w + 'em');
+		object.hitbox.elem.height(object.height * object.hitbox.h + 'em');
+		object.hitbox.elem.css('left', ((object.width - (1 - object.hitbox.w) * object.width) / 2 + object.hitbox.x) + 'em');
+		object.hitbox.elem.css('top', ((object.height - (1 - object.hitbox.h) * object.height) / 2 + object.hitbox.y) + 'em');
+		object.hitbox.w = u.px2em(object.hitbox.elem.width());
+		object.hitbox.h = u.px2em(object.hitbox.elem.height());
+		var pos = object.hitbox.elem.position();
 		object.hitbox.x = u.px2em(pos.top) + object.x;
 		object.hitbox.y = u.px2em(pos.left) + object.y;
 		ents[type].push(object);
 	},
 
 	despawn: function(type, index) {
+		if (typeof ents[type][index].death == 'function') {
+			ents[type][index].death();
+		}
 		ents[type][index].elem.remove();
 		ents[type].splice(index, 1);
 	},
@@ -45,6 +48,7 @@ var ents = {
 				left: npe.x + 'em',
 				top: npe.y + 'em',
 			});
+			//console.log(npe.x + 'em' + npe.y + 'em');
 		});
 		// PLAYER BULLETS
 		ents.bullet.forEach(function(bullet, index) {
@@ -81,7 +85,10 @@ var ents = {
 				bullet.hitbox.y + bullet.hitbox.h > ent.hitbox.y &&
 				bullet.hitbox.y < ent.hitbox.y + ent.hitbox.w
 			) {
-				console.log('hit!');
+				//console.log('hit!');
+				if (typeof ent.points !== 'undefined') {
+					player.points_add(ent.points);
+				}
 				ents.despawn('bullet', index);
 				hit = true;
 				return;

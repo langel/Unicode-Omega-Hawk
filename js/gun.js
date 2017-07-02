@@ -2,6 +2,7 @@
 var gun = {
 
 	mode: 0,
+	mode_max: 0,
 	modes: [
 	  [90],
 	  [70, 110],
@@ -23,8 +24,10 @@ var gun = {
 		this.modes[this.mode].forEach(function(angle) {
 			gun.spawn_bullet(angle);
 		});
-		this.mode++;
-		if (this.mode >= this.modes.length) this.mode = 0;
+		this.mode++
+		if (this.mode >= this.modes.length ||
+			this.mode >= this.mode_max
+		) this.mode = 0;
 	},
 
 	spawn_bullet: function(angle) {
@@ -33,6 +36,8 @@ var gun = {
 		var start_y = player.y + (player.height * 0.25);
 		var innards = '<div class="player_bullet"><div class="sprite">' + this.str + '</div><div class="hitbox"></div></div>';
 		var bullet = {
+			angle: angle,
+			speed: this.speed,
 			x: start_x,
 			y: start_y,
 			dx: movement.x,
@@ -56,6 +61,24 @@ var gun = {
 	},
 
 	frame: function() {
+		ents.bullet.forEach(function(bullet, index) {
+			if (ents.inside_gamefield(bullet)) {
+				var movement = u.trig_velocity(bullet.angle, bullet.speed / engine.fps);
+				bullet.dx = movement.x;
+				bullet.dy = movement.y;
+				bullet.x += bullet.dx;
+				bullet.y += bullet.dy;
+				bullet.hitbox.x += bullet.dx;
+				bullet.hitbox.y += bullet.dy;
+				bullet.elem.css({
+					left: bullet.x + 'em',
+					top: bullet.y + 'em',
+				});
+			}
+			else {	
+				ents.despawn('bullet', index);
+			}
+		});
 		if (this.throttle.count > 0) {
 			this.throttle.count--;
 		}
